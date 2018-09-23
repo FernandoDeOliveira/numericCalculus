@@ -59,32 +59,17 @@ def metedo_bisseccao(a, b, erro, n_max_iteracao, funcao):
     :param funcao: funcao a ser calculada
     :return: valor aproximado
     """
-    eixo_x, eixo_y = [], []     # axis for plotting graphics
-    eixo_x.append(a)
-    eixo_y.append(funcao(a))
-    eixo_x.append(b)
-    eixo_y.append(funcao(b))
+    
     while n_max_iteracao != 0:
         m = (a + b) / 2
-        eixo_x.append(m)
-        eixo_y.append(funcao(m))
+        
 
         if funcao(m) == 0 or abs((b - a) / 2) < erro:
-            plt.plot(eixo_x, eixo_y, 'X',
-                     eixo_x, eixo_y, '-')
-            # plotting graphic
-            plt.show()
-            # show graphic
-            return m
+           return m
 
         [a, b] = [m, b] if funcao(b) * funcao(m) < 0 else [a, m]  # val a,b it's update to a new interval
         n_max_iteracao -= 1
 
-    plt.plot(eixo_x, eixo_y, 'X',
-             eixo_x, eixo_y, '-')
-    # plotting graphic
-    plt.show()
-    # show graphic
     return "O metodo falhou apos intercoes"
 
 
@@ -97,36 +82,20 @@ def metodo_falsa_posicao(a, b, erro, n_max_iteracao, funcao):
     :param funcao: f(x)
     :return: raiz
     """
-    eixo_x, eixo_y = [], []     # axis for plotting graphics
-
-    eixo_x.append(a)
-    eixo_y.append(funcao(a))
-
-    eixo_x.append(b)
-    eixo_y.append(funcao(b))
-
     def x_barra():
         return b - (n * (b - a)) / (n - m)
 
     for i in range(n_max_iteracao):
         m, n = funcao(a), funcao(b)
         x = x_barra()
-        eixo_x.append(x)
-        eixo_y.append(funcao(x))
-
+        
         if abs(x - b) < erro:
-            plt.plot(eixo_x, eixo_y, 'X',
-                     eixo_x, eixo_y, '-')
-            plt.show()
             return x
 
         if funcao(x) * funcao(b) < 0:
             a, m = b, n
 
-        b, n = x, funcao(x)
-    plt.plot(eixo_x, eixo_y, 'X',
-             eixo_x, eixo_y, '-')
-    plt.show()
+        b, n = x, funcao(x)   
     return "metodo falhou apos {numero} tentativas".format(numero=n_max_iteracao)
 
 
@@ -139,22 +108,13 @@ def metodo_ponto_fixo(x0, error, n_max_iteracao, funcao):
     :param funcao: mathematical function it's passed
     :return: approximately the root of the equation and plot the graphic
     """
-    eixo_x, eixo_y = [], []
-
     while (n_max_iteracao != 0):
-        c = funcao(x0)
-        eixo_x.append(x0)
-        eixo_y.append(c)
-        if abs(c - x0) < error:
-            plt.plot(eixo_x, eixo_y, 'X',
-                     eixo_x, eixo_y, '-')
-            plt.show()
+        c = funcao(x0)        
+        if abs(c - x0) < error:            
             return 'the root of the equation its approximately {}'.format(c)
+        
         x0 = c
         n_max_iteracao -= 1
-    plt.plot(eixo_x, eixo_y, 'X',
-             eixo_x, eixo_y, '-')
-    plt.show()
     return 'method fail after interactions'
 
 
@@ -168,10 +128,6 @@ def metodo_NR(x0, err1, err2, n_max_iteracao, funcao):
     :param funcao: mathematical function
     :return: approximately the root of the equation and plot the graphic
     """
-    eixo_x, eixo_y = [], []
-    eixo_x.append(x0)
-    eixo_y.append(funcao(x0))
-
     x, y = symbols('x y')
     # cria variáveis x e y
 
@@ -183,55 +139,27 @@ def metodo_NR(x0, err1, err2, n_max_iteracao, funcao):
 
     while (n_max_iteracao != 0):
         if abs(funcao(x0)) < err1:
-            plt.plot(eixo_x, eixo_y, 'X',
-                     eixo_x, eixo_y, '-')
-            plt.show()
             return x0
 
         x1 = x0 - (funcao(x0) / dx.subs(x, x0))
-        eixo_x.append(x1)
-        eixo_y.append(funcao(x1))
-
-        if abs(funcao(x1)) < err1 or abs(x1 - x0) < err2:
-            plt.plot(eixo_x, eixo_y, 'X',
-                     eixo_x, eixo_y, '-')
-            plt.show()
+        if abs(funcao(x1)) < err1 or abs(x1 - x0) < err2:            
             return x1
         x0 = x1
-    plt.plot(eixo_x, eixo_y, 'X',
-             eixo_x, eixo_y, '-')
-    plt.show()
     return "method fail after interactions"
 
 
 def metodo_secante(x0, x1, erro, n_max_iteracao, funcao):
-    eixo_x, eixo_y = [], []
-
     m, n = funcao(x0), funcao(x1)
-    eixo_x.append(x0)
-    eixo_x.append(x1)
-    eixo_y.append(m)
-    eixo_y.append(n)
-
+    
     while (n_max_iteracao != 0):
-
         c = x1 - ((n * (x1 - x0)) / (n - m))
-
         if abs(c - x1) < erro:
-            eixo_x.append(c)
-            eixo_y.append(funcao(c))
-            plt.plot(eixo_x, eixo_y, 'X',
-                     eixo_x, eixo_y, '-')
-            plt.show()
             return c
         x0 = x1
         m = n
         x1 = c
         n = funcao(c)
         n_max_iteracao -= 1
-    plt.plot(eixo_x, eixo_y, 'X',
-             eixo_x, eixo_y, '-')
-    plt.show()
     return "o método falhou após interções"
 
 
